@@ -37,5 +37,6 @@ export default {
     storeId: envVars.STORE_ID,
     storePass: envVars.STORE_PASS,
     sslPaymentUrl: envVars.SSL_BASE_PAYMENT_URL,
+    sslValidationUrl: envVars.SSL_BASE_VALIDATION_URL,
   },
 };
