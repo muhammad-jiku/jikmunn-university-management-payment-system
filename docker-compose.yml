@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jikmunn-university-management-payment-system:latest
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/jikmunn-university-management-payment-system?schema=public
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=jikmunn-university-management-payment-system
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
+    restart: unless-stopped
+
+  web:
+    image: nginx:latest
+    ports:
+      - '80:80'
+
+volumes:
+  pgdata:
